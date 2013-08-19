@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>A minimal example of SUI.AnchorLayout</title>
+        <script src="http://shjs.sourceforge.net/sh_main.min.js"></script>
+        <script src="http://shjs.sourceforge.net/lang/sh_javascript.min.js"></script> 
+        <link href="support/content.css" rel="stylesheet" type="text/css">
+        <link href="support/code.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="../../build/js/sui.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../build/css/sui.css">
+        <script type="text/javascript" id="sample">
+"use strict";
+// Initialize the SUI library.
+SUI.initialize();
+SUI.imgDir = "../../build/img";
+// Use a global variable to access the dialog from an event handler. 
+var dialog = null;
+// When all is loaded do our startup routine.
+SUI.onStart = function() {
+    // Create a resizable dialog window of 350 px width and 150 px height.
+    dialog = new SUI.Window({
+        width: 350,
+        height: 150,
+        resizable: true
+    });
+    // Create an anchor layout with a padding of 10 px to hold the form 
+    // elements.
+    var anchorLayout = new SUI.AnchorLayout({
+        padding: new SUI.Padding(10)
+    });
+    // Create a label for the 'name' input field, it has a fixed width and
+    // will be anchored to the left side of the layout box.
+    var label1 = new SUI.form.Label({
+        anchor: { left: true },
+        width: 70,
+        title: "Your name"
+    });
+    // Create the 'name' input field, it will keep a distance of 80 px from
+    // the left side and 0 px from the right side of the layout box.
+    var input = new SUI.form.Input({
+        anchor: { left: true, right: true },
+        left: 80
+    });
+    // Create a label for the 'complaints' input field, it has a fixed width
+    // and will be anchored to the left side of the layout box.
+    var label2 = new SUI.form.Label({
+        anchor: { left: true },
+        top: 30,
+        width: 70,
+        title: "Complaints"
+    });
+    // Create a text area to enter complaints, it will keep a distance of 
+    // 80 px from left, 30 px from the top and 0 px from the right and bottom
+    // side of the layout box.
+    var textArea = new SUI.form.TextArea({
+        anchor: { top: true, left: true, right: true, bottom: true },
+        top: 30,
+        left: 80
+    });
+    // Set label and input field relations.
+    label1.forBox(input);
+    label2.forBox(textArea);
+    // Add the form components to the anchor layout.
+    anchorLayout.add(label1);
+    anchorLayout.add(input);
+    anchorLayout.add(label2);
+    anchorLayout.add(textArea);
+    // And add the anchor layout to the dialog.
+    dialog.add(anchorLayout);
+};
+// Just a function to call 'dialog.show()' from an event handler (return false
+// to prevent the event's default action, for example:
+// &lt;a href="#" onclick="return showDialog()"&gt;click me&lt;/a&gt;
+function showDialog() {
+    dialog.show();
+    return false;
+}
+        </script>
+    </head>
+    <body>
+        <h1>A minimal example of SUI.AnchorLayout
+        </h1>  
+        <div id="samplebox">
+        <h2>The code for this example</h2>
+        <pre class="sh_javascript" id="holycode">
+        </pre>
+        <script>
+        document.getElementById("holycode").innerHTML = 
+            document.getElementById("sample").innerHTML; 
+        sh_highlightDocument();
+        </script>
+        </div>
+        <a href="#" onclick="return showDialog()"><h2>Show example</h2></a>
+        <p>An anchor layout is typically used when making forms. Flowing types
+        of layouts are generally not very useful since we're working with 
+        labels and form elements and not with chunks of text: we always want
+        the labels to be positioned relative to the input fields, they are no
+        part of a flowing text. 
+        </p>
+        <p>An anchor layout will not do that, but they will allow you to 
+        position form elements relative to the edges of the layout box. This 
+        way you'll achieve the same results.
+        </p>
+        <p>A form will usually be rendered as a two column table with one 
+        column for the labels and another for the input fields. You don't want
+        the label column to resize because it contains predefined texts.
+        Resizing this column would mean a larger distance between the labels 
+        and the input fields and therefore cause an illegible form.
+        </p>
+        <p>When resizing you want the extra space for the benefit of data
+        entry. So only the input fields should be resized, and an anchor layout
+        will do just that. You indicate which elements resize along with the 
+        form and which don't.
+        </p>
+        <p>In this example we examine a very simple but also commonly used 
+        form: a popup box with just an input field and a text area. When 
+        resizing the form it is clear where we want use the extra space:
+        </p>
+        <ol>
+        <li>the labels don't change their content so these should keep the
+        same size,</li>
+        <li>the input field does not need some extra height but it always 
+        could use some extra width,</li>
+        <li>the text area obviously just can't be big enough in this case.</li>
+        </ol>
+        <p>This basic example should give you an very idea of what an anchor
+        layout is. Only by extending this sample you can create some very 
+        interesting dialogs. But the usage of anchor layout can be much more
+        complex: think of multiple anchor layouts on a single form.
+        </p>
+             
+    </body>
+</html>

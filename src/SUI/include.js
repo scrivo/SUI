@@ -48,12 +48,15 @@ function _corelib(s) {
  */
 _corelib([
 	"SUI.js",
-	"i18n.js",
-	"browser.js",
-	"xhr.js",
-	"style.js",
-	"color.js",
-	"date.js",
+	
+	"lib/i18n.js",
+	"lib/browser.js",
+	"lib/xhr.js",
+	"lib/style.js",
+	"lib/color.js",
+	"lib/date.js",
+	"lib/cryptography.js",
+	"lib/rsa.js",
 
 	"Event.js",
 	"ActionList.js",

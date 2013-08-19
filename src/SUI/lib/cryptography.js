@@ -105,7 +105,7 @@
  * Flooring is usually done by a bitwise OR with zero (x|0) which seems to be
  * a little more efficient than Math.floor().
  */
-var Cryptography = {
+SUI.cryptography = {
 		
 	/**
 	 * The bit width of the digits in large number arrays

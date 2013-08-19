@@ -33,7 +33,7 @@
 /**
  * @namespace Holds a set of functions for RSA encryption.
  */
-var RSA = {
+SUI.rsa = {
 
 	/**
 	 * Encrypt data using RSA encryption.

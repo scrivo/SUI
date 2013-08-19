@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>What is an SUI.ActionList?</title>
+        <script src="http://shjs.sourceforge.net/sh_main.min.js"></script>
+        <script src="http://shjs.sourceforge.net/lang/sh_javascript.min.js"></script> 
+        <link href="support/content.css" rel="stylesheet" type="text/css">
+        <link href="support/code.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="../../build/js/sui.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../build/css/sui.css">
+        <script type="text/javascript" id="sample">
+"use strict";
+// Initialize the SUI library.
+SUI.initialize();
+SUI.imgDir = "../../build/img";
+// Use a global variable to access the dialog from an event handler. 
+var dialog = null;
+// When all is loaded do our startup routine.
+SUI.onStart = function() {
+    // Define some actions
+    function showError() {
+        new SUI.dialog.Alert({
+            icon: "error", 
+            width: 300,
+            caption: "Error box", 
+            text: "You've clicked the error button"
+        }).show();
+    }
+    function showOK() {
+        new SUI.dialog.Alert({
+            icon: "ok", 
+            width: 300,
+            caption: "OK box", 
+            text: "You've clicked the OK button"
+        }).show();
+    }
+    function showAlert() {
+        new SUI.dialog.Alert({
+            width: 300,
+            text: "You've clicked the alert button"
+        }).show();
+    }
+    // Create an actionlist: add descriptive information (icon, title) to the
+    // to the action and store these in the list.
+    var actionList = new SUI.ActionList([{
+        actionId: "error",
+        title: "Show an error message",
+        icon: "page.png",
+        handler: showError
+    },{
+        actionId: "ok",
+        title: "Show an ok message",
+        icon: "calendar.png",
+        handler: showOK
+    },{
+        actionId: "alert",
+        title: "Show an alert message",
+        icon: SUI.resource.acClosed,
+        handler: showAlert
+    }]);
+    // Create a toolbar that uses actions from the action list.
+    var toolBar = new SUI.Toolbar({
+        top: 20,
+        left: 20,
+        width: 120,
+        actionlist: actionList,
+        tools: [
+            new SUI.ToolbarButton({actionId: "error"}),
+            new SUI.ToolbarButton({actionId: "ok"}),
+            new SUI.ToolbarButton({actionId: "alert"})
+        ]
+    }); 
+    // Create a menu that uses actions from the action list.
+    var menu = new SUI.PopupMenu({
+        actionlist: actionList,
+        items: [
+            { actionId: "error" },
+            { actionId: "ok" },
+            { actionId: "alert" }
+        ]
+    }); 
+    // Create a button to show the menu.
+    var button = new SUI.form.Button({
+        top: 80,
+        left: 20,
+        width: 100,
+        title: "Show menu"
+    });
+    SUI.browser.addEventListener(button.el(), "click", function(e) {
+        menu.showMenu(SUI.browser.getY(e), SUI.browser.getX(e));
+        SUI.browser.noPropagation(e);
+    });
+    // Create another button to trigger an action.
+    var alertButton = new SUI.form.Button({
+        top: 140,
+        left: 20,
+        width: 100,
+        title: "Show alert"
+    });
+    SUI.browser.addEventListener(alertButton.el(), "click", function() {
+        actionList.doAction("alert");
+    });
+    // Create check box 
+    var checkBox = new SUI.form.CheckBox({
+        top: 200,
+        left: 20,
+        width: 100
+    });
+    // Create check box label
+    var checkBoxLabel = new SUI.form.Label({
+        top: 200,
+        left: 40,
+        width: 100,
+        title: "Disable alert",
+        forBox: checkBox
+    });
+    SUI.browser.addEventListener(checkBox.el(), "click", function() {
+        actionList.enable({alert: !checkBox.el().checked});
+    });
+    // Draw all the components directly on the document body
+    var ctrls = [toolBar, button, alertButton, checkBox, checkBoxLabel];
+    for (var i=0; i<ctrls.length; i+=1) {
+        ctrls[i].draw();
+        document.getElementById("example").appendChild(ctrls[i].el());
+    }
+};
+       </script>
+    </head>
+    <body>
+        <h1>What's a SUI.ActionList? 
+        </h1>  
+        <div id="samplebox">
+        <h2>The code for this example</h2>
+        <pre class="sh_javascript" id="examplecode"></pre>
+        <script type="text/javascript">
+        document.getElementById("examplecode").innerHTML = document.
+          getElementById("sample").innerHTML.replace("<", "&lt;").
+          replace(">", "&gt;"); sh_highlightDocument();
+        </script>
+        </div>
+        <div id="example" class="examplebox" style="width:120px;height:200px">
+        </div>
+        <p>In today's user interfaces there will be more ways to initiate a 
+        certain action. For instance a save action might be triggered by a
+        toolbar button, a context menu or a keyboard shortcut. If you have a
+        significant number of actions in your interfaces it becomes 
+        increasingly difficult to manage the actions and elements that
+        invoke these actions.  
+        </p>
+        <p>Suppose that the previously mentioned save action should be 
+        enabled only when certain data is changed. Ideally you'll want to 
+        disable the toolbar button and context menu item too. This easily can
+        lead to pages of spaghetti code.
+        </p>
+        <p>An action list can provide a solution in this case. Instead of 
+        linking the interface elements with the action handlers directly you 
+        store the actions in a central repository: the action list. And the
+        elements that should invoke the actions are registered at the action
+        list. The action list knows how it should manipulate the state of 
+        interface elements and prevents access to disabled actions. Thus when
+        an action is disabled, all interface elements that trigger the action
+        are disabled too. It somehow the action is triggered anyway the action
+        list will ultimately prevent it.  
+        </p>
+        <p>In the example box a typical example is given. It is a small 
+        interface to three actions: to popup three different boxes, pretty 
+        useless but actions nonetheless. The three actions can be triggered
+        by toolbar buttons and a popup menu. The 'alert' action can also be
+        triggered by a button. 
+        </p>
+        <p>If you check the 'disable alert' check box the 'alert' action will
+        be disabled and the interface responds immediately by disabling the 
+        'alert' button on the toolbar and the 'alert' menu option. 
+        </p>
+        <p>Apparently the big 'Show alert' button is still active. That is 
+        because it was not registered at the action list, but it still uses
+        the action list's action. So when clicking the button the action
+        list will prevent action execution.     
+        </p>
+        <p>There is also another benefit of using an action list. The toolbar
+        buttons and menu items have icons and (hover) texts. These are 
+        arguably not properties of these interface elements but rather
+        properties of the actions. By using an action list you can define 
+        icons and descriptive texts at the action level and let the user 
+        interface elements use this data (unless redefined/overridden).     
+        </p>
+    </body>
+</html>

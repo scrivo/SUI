@@ -1,0 +1,35 @@
+body {
+    font-family: "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+    background-color: #F6F6F1;
+    margin: 2em 1em 1em 3em;
+    font-size: 100%;
+}
+
+a {
+    text-style: underline;
+    color: #770000;
+}
+
+h1 {
+    font-size: 130%;
+    color: #000077;
+}
+h2 {
+    font-size: 120%;
+}
+h3 {
+    font-size: 110%;
+}
+h4 {
+    font-size: 100%;
+}
+
+.examplebox {
+    float: left; 
+    margin-right: 20px; 
+    margin-bottom: 20px; 
+    position: relative; 
+    border: solid #bbbb88 1px; 
+    padding: 20px; 
+    background-color: white;
+}
